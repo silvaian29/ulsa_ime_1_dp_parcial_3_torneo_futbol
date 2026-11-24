@@ -61,7 +61,7 @@ inline void registrarPartidoEquipo(EquipoTabla &equipo, int golesPropios, int go
     } else {                                 // Perdió: +0
         equipo.pp++;
     }
-    
+
 }// Devuelve true si el equipo "a" debe ir ARRIBA del equipo "b"
 // Criterios: 1) puntos  2) diferencia de goles  3) goles a favor
 inline bool vaPrimero(const EquipoTabla &a, const EquipoTabla &b)
@@ -92,3 +92,24 @@ inline void ordenarTabla(EquipoTabla tabla[], int totalEquipos)
         }
     }
 }
+// Función principal: arma y muestra la tabla de posiciones
+inline void mostrarTablaPosiciones(
+    const Partido resultados[],
+    int totalPartidos)
+{
+    if (totalPartidos == 0) {
+        cout << "Primero debes simular el torneo.\n";
+        return;
+    }
+
+    EquipoTabla tabla[MAX_EQUIPOS];
+    int totalEquipos = 0;
+
+    // Recorremos cada partido guardado y actualizamos a ambos equipos
+    for (int i = 0; i < totalPartidos; i++) {
+        int pos1 = buscarOAgregarEquipo(tabla, totalEquipos, resultados[i].equipo1);
+        int pos2 = buscarOAgregarEquipo(tabla, totalEquipos, resultados[i].equipo2);
+
+        registrarPartidoEquipo(tabla[pos1], resultados[i].goles1, resultados[i].goles2);
+        registrarPartidoEquipo(tabla[pos2], resultados[i].goles2, resultados[i].goles1);
+    }
