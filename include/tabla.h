@@ -7,7 +7,7 @@
 using namespace std;
 
 // Máximo de equipos posibles (15 partidos x 2 equipos)
-const int MAX_EQUIPOS = 30;
+const int MAX_EQUIPOS = 6;
 
 // Estructura para guardar las estadísticas de cada equipo
 struct EquipoTabla {
@@ -32,3 +32,33 @@ inline int buscarOAgregarEquipo(
             return i;
         }
     }
+        tabla[totalEquipos].nombre = nombre;
+    tabla[totalEquipos].pj = 0;
+    tabla[totalEquipos].pg = 0;
+    tabla[totalEquipos].pe = 0;
+    tabla[totalEquipos].pp = 0;
+    tabla[totalEquipos].gf = 0;
+    tabla[totalEquipos].gc = 0;
+    tabla[totalEquipos].pts = 0;
+
+    totalEquipos++;
+    return totalEquipos - 1;
+}
+
+// Actualiza las estadísticas de UN equipo según los goles del partido
+inline void registrarPartidoEquipo(EquipoTabla &equipo, int golesPropios, int golesRival)
+{
+    equipo.pj++;
+    equipo.gf += golesPropios;
+    equipo.gc += golesRival;
+
+    if (golesPropios > golesRival) {        // Ganó: +3
+        equipo.pg++;
+        equipo.pts += 3;
+    } else if (golesPropios == golesRival) { // Empató: +1
+        equipo.pe++;
+        equipo.pts += 1;
+    } else {                                 // Perdió: +0
+        equipo.pp++;
+    }
+}
